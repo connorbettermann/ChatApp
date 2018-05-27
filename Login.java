@@ -56,9 +56,13 @@ public class Login extends Application {
         GridPane.setConstraints(loginButton, 1, 2);
         loginButton.setOnAction(e -> login(nameInput.getText(), passInput.getText()));
 
+        Button newUserButton = new Button("Create Account");
+        GridPane.setConstraints(newUserButton, 1, 3);
+        newUserButton.setOnAction(e -> createAccount(nameInput.getText(), passInput.getText()));
 
 
-        grid.getChildren().addAll(nameLabel, nameInput, passLabel, passInput, loginButton);
+
+        grid.getChildren().addAll(nameLabel, nameInput, passLabel, passInput, loginButton, newUserButton);
 
         Scene scene = new Scene(grid, 300, 200);
         window.setScene(scene);
@@ -108,6 +112,28 @@ public class Login extends Application {
             alert.setHeaderText("Invalid Credentials Entered");
             alert.showAndWait();
             return;
+        }
+    }
+
+    public void createAccount(String in_name, String in_pass)
+    {
+        if(in_name.isEmpty() == true || in_pass.isEmpty() == true)
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Credentials Entered");
+            alert.showAndWait();
+            return;
+        }
+        else {
+            currentUser.setUser(in_name, in_pass);
+            database.addUser(in_name, in_pass);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Welcome!");
+            alert.setHeaderText("Account Created For " + in_name);
+            alert.showAndWait();
+            window.setScene(scene2);
+
         }
     }
 
