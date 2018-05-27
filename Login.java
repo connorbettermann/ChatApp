@@ -7,10 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -20,8 +17,13 @@ public class Login extends Application {
     Stage window;
     Scene scene1, scene2;
 
+    DBConnect database = new DBConnect();
+    User currentUser = new User();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
 
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("ChatApp");
@@ -52,7 +54,9 @@ public class Login extends Application {
 
         Button loginButton = new Button("Log In");
         GridPane.setConstraints(loginButton, 1, 2);
-        loginButton.setOnAction(e -> window.setScene(scene2));
+        loginButton.setOnAction(e -> login(nameInput.getText(), passInput.getText()));
+
+
 
         grid.getChildren().addAll(nameLabel, nameInput, passLabel, passInput, loginButton);
 
@@ -60,9 +64,6 @@ public class Login extends Application {
         window.setScene(scene);
         window.show();
 
-
-
-        // window = primaryStage;
 
         Label label1 = new Label("First Scene");
         Button button1 = new Button("Go to scene 2");
@@ -81,25 +82,39 @@ public class Login extends Application {
         Button button2 = new Button("Send");
         GridPane.setConstraints(button2, 10, 9);
         window.setTitle("TheChatApp - Client Server");
-        //button2.setOnAction(e -> window.setScene(scene1));
         button2.setOnAction(e -> System.out.println("Message sent"));
         grid.getChildren().addAll(msg, button2);
         GridPane layout2 = new GridPane();
         layout2.setHgap(20);
         layout2.setVgap(20);
-        layout2.setGridLinesVisible(true);
+        layout2.setGridLinesVisible(false);
         layout2.getChildren().addAll(button2, msg);
         scene2 = new Scene(layout2, 400, 210);
 
 
-
-        /*window.setScene(scene1);
-        window.setTitle("Title here");
-        window.show();*/
     }
+
+    public void login(String in_name, String in_pass)
+    {
+        currentUser = database.loginUser(in_name, in_pass);
+        if(currentUser != null)
+        {
+            window.setScene(scene2);
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Credentials Entered");
+            alert.showAndWait();
+            return;
+        }
+    }
+
+
 
     /*public static void main(String[] args) {
         launch(args);
     }*/
-    //Test github
+
 }

@@ -41,4 +41,10 @@ public class User {
         return password;
     }
 
+    public void setUser(String in_name, String in_pass)
+    {
+        userName = in_name;
+        password = in_pass;
+    }
+
 }
