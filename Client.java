@@ -80,11 +80,6 @@ public class Client
         {
             try
             {
-
-                //line = cDataField.getText();
-                //String finalLine = line;
-                //line = input.readLine();
-
                 cButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -93,7 +88,7 @@ public class Client
                             String finalLine = cDataField.getText();
                             if(finalLine.isEmpty() == false) {
                                 out.writeUTF(currentUser.userName + ": " + finalLine + "\n");
-                                cMessageArea.append(currentUser.userName + ": " + finalLine + "\n");
+                                //cMessageArea.append(currentUser.userName + ": " + finalLine + "\n");
                             }
                             out.flush();
                             cDataField.setText("");
@@ -101,15 +96,13 @@ public class Client
                         {
                             System.out.println(i);
                         }
-
-
-
                     }
                 });
-                //out.writeUTF(line);
-
                 String serverLine = serverIn.readUTF(serverIn);
-                System.out.println("Server says:" + serverLine);
+                //System.out.println("Server says:" + serverLine);
+                if(serverLine.isEmpty() == false) {
+                    cMessageArea.append(serverLine + "\n");
+                }
             }
             catch(IOException i)
             {
@@ -132,9 +125,8 @@ public class Client
 
     public static void main(String args[])
     {
-        //need to put client gui in this class so that it is launch and can access client info.
-        User user = new User("testuser", "password");
-        Client client = new Client("127.0.0.1", 5000, user);
+        User user1 = new User("testuser1", "password");
+        Client client1 = new Client("127.0.0.2", 5000, user1);
     }
 
     public static void setText(String in, String to_copy)

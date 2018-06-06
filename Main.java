@@ -22,10 +22,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
 
-        //Test upload change to github
 
         Application.launch(Login.class, args);
 
-        //Test github
     }
 }
