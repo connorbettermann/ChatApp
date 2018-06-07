@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Application;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.net.*;
 import java.io.*;
@@ -38,6 +39,8 @@ public class Client
     // constructor to put ip address and port
     public Client(String address, int port, User in_user)
     {
+
+
         User currentUser = in_user;
         JFrame cFrame = new JFrame("Client - " + currentUser.userName);
         cFrame.getContentPane().add(cDataField, "North");
@@ -101,7 +104,7 @@ public class Client
                 String serverLine = serverIn.readUTF(serverIn);
                 //System.out.println("Server says:" + serverLine);
                 if(serverLine.isEmpty() == false) {
-                    cMessageArea.append(serverLine + "\n");
+                    cMessageArea.append(serverLine);
                 }
             }
             catch(IOException i)
@@ -125,14 +128,11 @@ public class Client
 
     public static void main(String args[])
     {
-        User user1 = new User("testuser1", "password");
-        Client client1 = new Client("127.0.0.2", 5000, user1);
+      User user = new User("testuser1", "password");
+      Client client = new Client("127.0.0.1", 5000, user);
     }
 
-    public static void setText(String in, String to_copy)
-    {
-        in = to_copy;
-    }
+
 }
 
 

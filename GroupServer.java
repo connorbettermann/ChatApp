@@ -2,6 +2,7 @@ package sample;
 
 import java.net.*;
 import java.io.*;
+import java.text.*;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -21,11 +22,6 @@ import java.net.*;
 public class GroupServer
 {
     //initialize socket and input stream
-    private Socket[]          socket   = null;
-    private ServerSocket[]    server   = null;
-    private DataInputStream[] in       =  null;
-    private DataOutputStream[] out     = null;
-    private int MAX = 10;
 
     public JFrame sFrame = new JFrame("GroupServer");
     public JTextField sDataField = new JTextField(40);
@@ -33,98 +29,43 @@ public class GroupServer
 
 
     // constructor with port
-    public GroupServer(int port)
+    public static void main(String[] args) throws IOException
     {
-        // starts server and waits for a connection
-        try
-        {
-            sFrame.getContentPane().add(sDataField, "North");
-            sFrame.getContentPane().add(new JScrollPane(sMessageArea), "Center");
 
-            sFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            sFrame.pack();
-            sFrame.setVisible(true);
-            sMessageArea.setEditable(false);
+            // server is listening on port 5056
+            ServerSocket ss = new ServerSocket(5000);
 
-            server = new ServerSocket[MAX];
-            int i = joinUser(socket, server, port);
+            // running infinite loop for getting
+            // client request
+            while (true) {
+                Socket s = null;
 
+                try {
+                    // socket object to receive incoming client requests
+                    System.out.println("Attempting to connect...");
+                    s = ss.accept();
 
-            // takes input from the client socket
-            in[i] = new DataInputStream(
-                    new BufferedInputStream(socket[i].getInputStream()));
+                    System.out.println("A new client is connected : " + s);
 
-            out[i] = new DataOutputStream(socket[i].getOutputStream());
+                    // obtaining input and out streams
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(s.getInputStream()));
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
 
-            String[] line = new String[MAX];
-            for(int j = 0; j < MAX; j++)
-            {
-                line[j] = "";
-            }
+                    System.out.println("Assigning new thread for this client");
 
+                    // create a new thread object
+                    Thread t = new ClientHandler(s, dis, dos);
 
+                    // Invoking the start() method
+                    t.run();
 
-            // reads message from client until "Over" is sent
-            while (!line[i].equals("Over"))
-            {
-                try
-                {
-
-                    line[i] = in[i].readUTF();
-                    sMessageArea.append(line[i]);
-                    out[i].writeUTF(line[i]);
-                    out[i].flush();
-
-                }
-                catch(IOException ex)
-                {
-                    System.out.println(ex);
+                } catch (IOException e) {
+                    s.close();
+                    e.printStackTrace();
                 }
             }
-            System.out.println("Closing connection");
-
-            // close connection
-            for(int k = 0; k < MAX; k++) {
-                socket[k].close();
-                in[k].close();
-                out[k].close();
-            }
-        }
-        catch(IOException exx)
-        {
-            System.out.println(exx);
-        }
-    }
-
-    public static void main(String args[])
-    {
-        Server server = new Server(5000);
-    }
-
-    private int joinUser(Socket[] in_socket, ServerSocket[] in_server, int port)
-    {
-        try
-        {
-            int i = 0;
-            while(server[i] != null)
-            {
-                i++;
-            }
-            in_server[i] = new ServerSocket(port);
-
-            System.out.println("Server started");
-
-            System.out.println("Waiting for a client ...");
-
-            socket[i] = server[i].accept();
-            System.out.println("Client accepted");
-            sMessageArea.setText("Client accepted\n");
-            return i;
-        }catch(IOException e)
-        {
-            System.out.println(e);
-        }
-        return -1;
     }
 }
+
+
 

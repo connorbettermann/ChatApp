@@ -82,7 +82,15 @@ public class Login extends Application {
         if(currentUser != null)
         {
             window.close();
-            Client client = new Client("127.0.0.1", 5000, currentUser);
+            try {
+                String address = InetAddress.getLocalHost().getHostAddress();
+                System.out.println(address);
+                Client client = new Client(address, 5000, currentUser);
+            }catch(UnknownHostException x)
+            {
+                System.out.println(x);
+            }
+            //Client client = new Client("127.0.0.1", 5000, currentUser);
         }
         else
         {
@@ -112,7 +120,9 @@ public class Login extends Application {
             alert.setTitle("Welcome!");
             alert.setHeaderText("Account Created For " + in_name);
             alert.showAndWait();
-            window.setScene(scene2);
+            window.close();
+            login(in_name, in_pass);
+
 
         }
     }

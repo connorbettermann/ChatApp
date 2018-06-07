@@ -89,7 +89,7 @@ public class Server
                         out2.flush();
                         out.flush();
                     }
-                    
+
                     else if(in2.available() != 0) {
                         line2 = in2.readUTF();
                         sMessageArea.append(line2);
@@ -125,8 +125,6 @@ public class Server
     {
         Server server = new Server(5000);
     }
-
-
 
 }
 
