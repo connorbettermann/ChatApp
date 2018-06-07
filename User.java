@@ -3,7 +3,7 @@ package sample;
 public class User {
     public String userName;
     protected String password;
-    public User[] friends;
+    public User[] friends; //unused element that could potentially hold a list of other users
     public int SIZE = 50;
 
     public User() {

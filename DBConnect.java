@@ -1,5 +1,9 @@
 package sample;
 
+/*
+This class controls the MySQL database connection on the local machine. It utilizes the
+mysql-connector-java-5.1 external library.
+*/
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,11 +19,10 @@ public class DBConnect {
     {
         try
         {
+            //connect to th database
             Class.forName("com.mysql.jdbc.Driver");
-
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false","root","leah3eth");
             st = con.createStatement();
-
         }catch(Exception ex)
         {
             System.out.println(ex);
@@ -27,6 +30,7 @@ public class DBConnect {
 
 
     }
+    //method to retrieve all data from the database
     public void getData() {
         try
         {
@@ -46,6 +50,7 @@ public class DBConnect {
         }
     }
 
+    //method to add a nw user to the database
     public void addUser(String in_user, String in_password)
     {
         try
@@ -60,6 +65,8 @@ public class DBConnect {
             System.out.println(ex);
         }
     }
+
+    //method to retrieve a user from the database based on username
     public void getUser(String in_user)
     {
         try
@@ -82,6 +89,8 @@ public class DBConnect {
             System.out.println(ex);
         }
     }
+
+    //method to retrieve user from database based on username and password. returns a User object
     public User loginUser(String in_user, String in_password)
     {
         try
@@ -108,6 +117,7 @@ public class DBConnect {
         }
     }
 
+    //method to remove a user from the database
     public void removeUser(User in_user)
     {
         try
@@ -124,6 +134,4 @@ public class DBConnect {
             System.out.println(ex);
         }
     }
-
-
 }

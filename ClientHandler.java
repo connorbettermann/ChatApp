@@ -1,5 +1,10 @@
 package sample;
 
+/*
+This class is not yet finished. It is a potential server replacement class that would handle
+any number of clients dynamically, utilizing the thread class
+*/
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -29,7 +34,7 @@ public class ClientHandler extends Thread {
         {
             try {
 
-                // receive the answer from client
+                // receive the string from client
                 received = dis.readUTF();
                 this.dos.writeUTF(received);
                 this.dos.flush();
@@ -50,7 +55,7 @@ public class ClientHandler extends Thread {
 
         try
         {
-            // closing resources
+            // closing connection
             this.dis.close();
             this.dos.close();
 

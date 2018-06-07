@@ -21,15 +21,13 @@ public class Login extends Application {
     Stage window;
     Scene scene1, scene2;
 
-
+    //create a new user to hold current user and database connection
     DBConnect database = new DBConnect();
     User currentUser = new User();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-
-
+        //Create login screen
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("ChatApp");
         primaryStage.setScene(new Scene(root, 300, 275));
@@ -59,16 +57,20 @@ public class Login extends Application {
 
         Button loginButton = new Button("Log In");
         GridPane.setConstraints(loginButton, 1, 2);
-        loginButton.setOnAction(e -> login(nameInput.getText(), passInput.getText()));
 
         Button newUserButton = new Button("Create Account");
         GridPane.setConstraints(newUserButton, 1, 3);
+
+        //when user presses login button, data is sent to login method
+        loginButton.setOnAction(e -> login(nameInput.getText(), passInput.getText()));
+
+        //when user presses create account button, data is sent to createAccount method
         newUserButton.setOnAction(e -> createAccount(nameInput.getText(), passInput.getText()));
 
-
-
+        //fill the grid with all elements
         grid.getChildren().addAll(nameLabel, nameInput, passLabel, passInput, loginButton, newUserButton);
 
+        //display the window
         Scene scene = new Scene(grid, 300, 200);
         window.setScene(scene);
         window.show();
@@ -78,22 +80,27 @@ public class Login extends Application {
 
     public void login(String in_name, String in_pass)
     {
+        //sends query to database to check if credentials valid
+        //fills currentUser object with user information if valid
         currentUser = database.loginUser(in_name, in_pass);
         if(currentUser != null)
         {
             window.close();
             try {
+                //gets ip address of local machine
                 String address = InetAddress.getLocalHost().getHostAddress();
                 System.out.println(address);
+
+                //creates new client object with address of current machine
                 Client client = new Client(address, 5000, currentUser);
             }catch(UnknownHostException x)
             {
                 System.out.println(x);
             }
-            //Client client = new Client("127.0.0.1", 5000, currentUser);
         }
         else
         {
+            //display alert message if credentials are invalid
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText("Invalid Credentials Entered");
@@ -107,6 +114,7 @@ public class Login extends Application {
     {
         if(in_name.isEmpty() == true || in_pass.isEmpty() == true)
         {
+            //display alert message if no credntials are entered for account creation
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText("Invalid Credentials Entered");
@@ -114,6 +122,8 @@ public class Login extends Application {
             return;
         }
         else {
+
+            //create a new user and send update request to database
             currentUser.setUser(in_name, in_pass);
             database.addUser(in_name, in_pass);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -122,13 +132,11 @@ public class Login extends Application {
             alert.showAndWait();
             window.close();
             login(in_name, in_pass);
-
-
         }
     }
 
 
-
+    //launch the login window
     public static void main(String[] args) {
         launch(args);
     }

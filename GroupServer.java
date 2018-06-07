@@ -1,5 +1,9 @@
 package sample;
-
+/*
+This class is not yet finished. This class would potentially replace the server class and work
+with the ClientHandler class to connect any number of clients together dynamically. his would utilize
+the thread class.
+*/
 import java.net.*;
 import java.io.*;
 import java.text.*;
@@ -32,7 +36,7 @@ public class GroupServer
     public static void main(String[] args) throws IOException
     {
 
-            // server is listening on port 5056
+            // server is listening on port 5000
             ServerSocket ss = new ServerSocket(5000);
 
             // running infinite loop for getting
@@ -56,7 +60,7 @@ public class GroupServer
                     // create a new thread object
                     Thread t = new ClientHandler(s, dis, dos);
 
-                    // Invoking the start() method
+                    // Invoking the run() method
                     t.run();
 
                 } catch (IOException e) {

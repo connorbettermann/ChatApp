@@ -31,7 +31,7 @@ public class Client
     private DataOutputStream out	 = null;
     private DataInputStream serverIn = null;
 
-
+    //Objects to fill the Client GUI
     public JTextField cDataField = new JTextField(40);
     public JTextArea cMessageArea = new JTextArea(8, 60);
     public JButton cButton = new JButton("Send");
@@ -39,14 +39,14 @@ public class Client
     // constructor to put ip address and port
     public Client(String address, int port, User in_user)
     {
-
-
+        //create new user to hold current user information
         User currentUser = in_user;
+
+        //Fill the Client GUI
         JFrame cFrame = new JFrame("Client - " + currentUser.userName);
         cFrame.getContentPane().add(cDataField, "North");
         cFrame.getContentPane().add(new JScrollPane(cMessageArea), "Center");
         cFrame.getContentPane().add(cButton, "South");
-
         cFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         cFrame.pack();
         cFrame.setVisible(true);
@@ -83,6 +83,8 @@ public class Client
         {
             try
             {
+                //this allows the data stream to be empty until the user presses the send button
+                //This may be un-needed, but I was having difficulty with the server reading and this fixed it.
                 cButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -101,8 +103,9 @@ public class Client
                         }
                     }
                 });
+
+                //Reads input from the server
                 String serverLine = serverIn.readUTF(serverIn);
-                //System.out.println("Server says:" + serverLine);
                 if(serverLine.isEmpty() == false) {
                     cMessageArea.append(serverLine);
                 }
@@ -128,11 +131,11 @@ public class Client
 
     public static void main(String args[])
     {
-      User user = new User("testuser1", "password");
-      Client client = new Client("127.0.0.1", 5000, user);
+        //create a test user object for testing purposes
+        User user = new User("testuser1", "password");
+        //create a client object and fill with the test user object created
+        Client client = new Client("127.0.0.1", 5000, user);
     }
-
-
 }
 
 

@@ -31,6 +31,7 @@ public class Server
     private String line = "";
     private String lin2 = "";
 
+    //Elements of server GUI
     public JFrame sFrame = new JFrame("Server");
     public JTextField sDataField = new JTextField(40);
     public JTextArea sMessageArea = new JTextArea(8, 60);
@@ -43,44 +44,44 @@ public class Server
         // starts server and waits for a connection
         try
         {
+            //Fill and display the server GUI
             sFrame.getContentPane().add(sDataField, "North");
             sFrame.getContentPane().add(new JScrollPane(sMessageArea), "Center");
-
             sFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             sFrame.pack();
             sFrame.setVisible(true);
             sMessageArea.setEditable(false);
 
+            //create new server socket and connect to first user
             server = new ServerSocket(port);
             System.out.println("Server started");
-
             System.out.println("Waiting for a client ...");
-
             socket = server.accept();
             System.out.println("Client accepted");
             sMessageArea.setText("Client accepted\n");
 
+            //connect to second user with same server socket
             sMessageArea.append("Waiting for second client...\n");
             socket2 = server.accept();
             sMessageArea.append("Second client accepted\n");
 
-            // takes input from the client socket
-            in = new DataInputStream(
-                    new BufferedInputStream(socket.getInputStream()));
-
+            // takes input from the first client socket
+            in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             out = new DataOutputStream(socket.getOutputStream());
 
+            // takes input from the second client socket
             in2 = new DataInputStream(new BufferedInputStream(socket2.getInputStream()));
             out2 = new DataOutputStream(socket2.getOutputStream());
 
-            String line = "";
-            String line2 = "";
+            String line = ""; // string to hold first user input
+            String line2 = ""; // string to hold second user input
 
             // reads message from client until "Over" is sent
             while (!line.equals("Over"))
             {
                 try
                 {
+                    //check if first user has submitted a message and write out to clients
                     if(in.available() != 0) {
                         line = in.readUTF();
                         sMessageArea.append(line);
@@ -89,7 +90,7 @@ public class Server
                         out2.flush();
                         out.flush();
                     }
-
+                    //check if second user has submitted a message and write out to clients
                     else if(in2.available() != 0) {
                         line2 = in2.readUTF();
                         sMessageArea.append(line2);
@@ -121,6 +122,7 @@ public class Server
         }
     }
 
+    //Creates a new server running on port 5000
     public static void main(String args[])
     {
         Server server = new Server(5000);
