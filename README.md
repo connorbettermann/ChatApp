@@ -1,3 +1,2 @@
 # ChatApp
-Chat Application using Java
-Practice using sockets
+Chat Application using Java, SQL, and Sockets
