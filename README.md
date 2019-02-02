@@ -1,2 +1,3 @@
 # ChatApp
-Chat Application CS300
+Chat Application using Java
+Practice using sockets
