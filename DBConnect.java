@@ -21,7 +21,7 @@ public class DBConnect {
         {
             //connect to th database
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false","root","leah3eth");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false","root","l(#mid)");
             st = con.createStatement();
         }catch(Exception ex)
         {
